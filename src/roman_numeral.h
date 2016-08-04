@@ -16,6 +16,8 @@ static const char roman_char[] = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 
 #define MAX_NUMBER_ROMAN_CHARACTERS 7
 #define MAX_STRING_LENGTH 256
+#define TRUE 1
+#define FALSE 0
 
 char *getstring(char *);
 int is_roman_numeral_character(char *);

@@ -3,14 +3,13 @@
 #include <stdlib.h>
 #include "../src/roman_numeral.h"
 
-static const char *teststring[] = {
+static char *teststring[] = {
 	"IVXLCDM", "ivxlcdm", "abcdefghi", "MCMLXVII"
 };
 
 START_TEST(check_null_ptr)
 {
 	char *ptr, *ptrtest = NULL;
-	int len;
 
 	ptr = getstring(ptrtest);
 	ck_assert_ptr_eq(ptr, ptrtest);
@@ -20,10 +19,18 @@ END_TEST
 START_TEST(check_nonnull_ptr)
 {
 	char *ptr;
-	int len;
 
-	ptr = getstring(&teststring[0]);
-	ck_assert_ptr_ne(ptr, teststring[0]);
+	ptr = getstring(*(&teststring[0]));
+	ck_assert_ptr_ne(ptr, &teststring[0]);
+}
+END_TEST
+
+START_TEST(check_roman_numeral_character)
+{
+	int strlength, len = 0;
+
+	strlength = is_roman_numeral_character(*(&teststring[0]));
+	ck_assert_int_gt(strlength, len);
 }
 END_TEST
 		
@@ -39,6 +46,7 @@ Suite *roman_numeral_suite(void)
 
 	tcase_add_test(tc_core, check_null_ptr);
 	tcase_add_test(tc_core, check_nonnull_ptr);
+	tcase_add_test(tc_core, check_roman_numeral_character);
 	suite_add_tcase(s, tc_core);
 
 	return s;
