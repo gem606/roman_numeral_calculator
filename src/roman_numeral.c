@@ -26,7 +26,7 @@ char *getstring(char *ptr_roman_numeral)
 	return ptr_roman_numeral;
 }
 
-int is_roman_numeral_character(char *ptr)
+int all_roman_numeral_character(char *ptr)
 {
 	int slen, i, j;
 	bool roman;
@@ -47,7 +47,17 @@ int is_roman_numeral_character(char *ptr)
 			}
 		}
 		if (!roman)
-			return 0;	/* None roman numeral */
+			return 0;	/* None roman numeral string */
 	}
 	return slen;
+}
+
+char *is_substring_in_roman_numeral(char *ptr, char *tstr)
+{
+	char *str;
+
+	/* Search for this string in the roman numeral */
+	str = strstr(ptr, tstr);
+
+	return str;
 }

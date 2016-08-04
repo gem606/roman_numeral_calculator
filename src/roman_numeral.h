@@ -7,8 +7,9 @@ struct roman_numeral_table {
 };
 
 static const struct roman_numeral_table roman_number_table[] = {
-	{"I", 1}, {"IV", 4}, {"V", 5}, {"IX", 9}, {"X", 10},
-	{"XL", 40}, {"L", 50}, {"XC", 90}, {"C", 100}, {"CD", 400},
+	{"I", 1}, {"II", 2}, {"III", 3}, {"IV", 4}, {"V", 5}, {"IX", 9},
+	{"X", 10}, {"XX", 20}, {"XXX", 30},{"XL", 40}, {"L", 50}, {"XC", 90},
+	{"C", 100}, {"CC", 200}, {"CCC", 300}, {"CD", 400},
 	{"D", 500}, {"DM", 900}, {"M", 1000}
 };
 
@@ -20,6 +21,6 @@ static const char roman_char[] = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 #define FALSE 0
 
 char *getstring(char *);
-int is_roman_numeral_character(char *);
+int all_roman_numeral_character(char *);
 
 #endif /* ROMAN_NURERAL_H */

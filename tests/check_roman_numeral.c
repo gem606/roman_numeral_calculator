@@ -4,7 +4,7 @@
 #include "../src/roman_numeral.h"
 
 static char *teststring[] = {
-	"IVXLCDM", "ivxlcdm", "abcdefghi", "MCMLXVII"
+	"IVXLCDM", "ivxlcdm", "abcdefghi", "MCMLXVII", "MCMXLIIII", "MCMXLIII"
 };
 
 START_TEST(check_null_ptr)
@@ -29,8 +29,17 @@ START_TEST(check_roman_numeral_character)
 {
 	int strlength, len = 0;
 
-	strlength = is_roman_numeral_character(*(&teststring[0]));
+	strlength = all_roman_numeral_character(*(&teststring[0]));
 	ck_assert_int_gt(strlength, len);
+}
+END_TEST
+
+START_TEST(check_substring_in_roman_numeral)
+{
+	char *rtstr, *tstring = "IIII";
+	
+	rtstr = (char *)is_substring_in_roman_numeral(*(&teststring[5]), tstring);
+	ck_assert_ptr_eq(rtstr, NULL);
 }
 END_TEST
 		
@@ -47,6 +56,7 @@ Suite *roman_numeral_suite(void)
 	tcase_add_test(tc_core, check_null_ptr);
 	tcase_add_test(tc_core, check_nonnull_ptr);
 	tcase_add_test(tc_core, check_roman_numeral_character);
+	tcase_add_test(tc_core, check_substring_in_roman_numeral);
 	suite_add_tcase(s, tc_core);
 
 	return s;
