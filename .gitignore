@@ -1,0 +1,23 @@
+*.[oa]
+*~
+*.log
+config*
+Makefil*
+*.m4
+.libs/
+*.la
+.deps/
+.m4/
+*.lo
+COPYING
+INSTALL
+autom4te.cache/
+depcomp
+install-sh
+libtool
+ltmain.sh
+missing
+src/main
+stamp-h1
+tests/check_roman_numeral
+Roman Numeral Calculator Kata (Embedded).pdf
