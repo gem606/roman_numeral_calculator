@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 char *getstring(char *ptr_roman_numeral)
 {
@@ -31,7 +32,7 @@ int all_roman_numeral_character(char *ptr)
 	int slen, i, j;
 	bool roman;
 
-	if ((slen = strlen(ptr)) == NULL)
+	if ((slen = strlen(ptr)) == 0)
 		return 0;
 	
 	/* Verify each character is roman numeral */
@@ -60,4 +61,25 @@ char *is_substring_in_roman_numeral(char *ptr, char *tstr)
 	str = strstr(ptr, tstr);
 
 	return str;
+}
+
+int roman_numeral_character_frequency(char *strptr, char tchar)
+{
+	int slen, nchar = 0, i;
+	char *ptr;
+
+	/* Get string length */
+	if ((slen = strlen(strptr)) == 0)
+		return 0;
+
+	ptr = strptr;
+
+	/* Seaarch for character in string */
+	for (i = 0; i < slen; i++) {
+		if (*ptr == tchar)
+			++nchar;
+		ptr += 1;
+	}
+
+	return nchar;
 }

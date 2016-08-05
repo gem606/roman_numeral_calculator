@@ -22,5 +22,7 @@ static const char roman_char[] = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 
 char *getstring(char *);
 int all_roman_numeral_character(char *);
+char *is_substring_in_roman_numeral(char *, char *);
+int roman_numeral_character_frequency(char *, char);
 
 #endif /* ROMAN_NURERAL_H */

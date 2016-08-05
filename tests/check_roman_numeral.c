@@ -4,7 +4,9 @@
 #include "../src/roman_numeral.h"
 
 static char *teststring[] = {
-	"IVXLCDM", "ivxlcdm", "abcdefghi", "MCMLXVII", "MCMXLIIII", "MCMXLIII"
+	"IVXLCDM", "ivxlcdm", "abcdefghi", "MCMLXVII", "MCMXLIIII", "MCMXLIII",
+	"CLXXXXIX", "CDXXXIX", "MCCCCMLVII", "MCCCLVIII", "MCMVVIII",
+	"MCMLVII", "LLLVD", "MCMLXIII", "MCDDDDD", "MCDLVIII"
 };
 
 START_TEST(check_null_ptr)
@@ -34,7 +36,7 @@ START_TEST(check_roman_numeral_character)
 }
 END_TEST
 
-START_TEST(check_substring_in_roman_numeral)
+START_TEST(check_I_substring_in_roman_numeral)
 {
 	char *rtstr, *tstring = "IIII";
 	
@@ -42,6 +44,55 @@ START_TEST(check_substring_in_roman_numeral)
 	ck_assert_ptr_eq(rtstr, NULL);
 }
 END_TEST
+
+START_TEST(check_X_substring_in_roman_numeral)
+{
+	char *rtstr, *tstring = "XXXX";
+	
+	rtstr = (char *)is_substring_in_roman_numeral(*(&teststring[7]), tstring);
+	ck_assert_ptr_eq(rtstr, NULL);
+}
+END_TEST
+
+START_TEST(check_C_substring_in_roman_numeral)
+{
+	char *rtstr, *tstring = "CCCC";
+	
+	rtstr = (char *)is_substring_in_roman_numeral(*(&teststring[9]), tstring);
+	ck_assert_ptr_eq(rtstr, NULL);
+}
+END_TEST
+
+START_TEST(check_V_character_frequency)
+{
+	int ncount;
+	char tstchar = 'V';
+
+	ncount = roman_numeral_character_frequency(*(&teststring[11]), tstchar);
+	ck_assert_int_le(ncount, 1);
+}
+END_TEST
+
+START_TEST(check_L_character_frequency)
+{
+	int ncount;
+	char tstchar = 'L';
+
+	ncount = roman_numeral_character_frequency(*(&teststring[13]), tstchar);
+	ck_assert_int_le(ncount, 1);
+}
+END_TEST
+		
+START_TEST(check_D_character_frequency)
+{
+	int ncount;
+	char tstchar = 'D';
+
+	ncount = roman_numeral_character_frequency(*(&teststring[15]), tstchar);
+	ck_assert_int_le(ncount, 1);
+}
+END_TEST
+		
 		
 Suite *roman_numeral_suite(void)
 {
@@ -56,7 +107,12 @@ Suite *roman_numeral_suite(void)
 	tcase_add_test(tc_core, check_null_ptr);
 	tcase_add_test(tc_core, check_nonnull_ptr);
 	tcase_add_test(tc_core, check_roman_numeral_character);
-	tcase_add_test(tc_core, check_substring_in_roman_numeral);
+	tcase_add_test(tc_core, check_I_substring_in_roman_numeral);
+	tcase_add_test(tc_core, check_X_substring_in_roman_numeral);
+	tcase_add_test(tc_core, check_C_substring_in_roman_numeral);
+	tcase_add_test(tc_core, check_V_character_frequency);
+	tcase_add_test(tc_core, check_L_character_frequency);
+	tcase_add_test(tc_core, check_D_character_frequency);
 	suite_add_tcase(s, tc_core);
 
 	return s;
