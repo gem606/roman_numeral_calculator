@@ -6,7 +6,7 @@ struct roman_numeral_table {
 	int roman_char_stringvalue;
 };
 
-static const struct roman_numeral_table roman_number_table[] = {
+static const struct roman_numeral_table roman_numeral_token[] = {
 	{"I", 1}, {"II", 2}, {"III", 3}, {"IV", 4}, {"V", 5}, {"IX", 9},
 	{"X", 10}, {"XX", 20}, {"XXX", 30},{"XL", 40}, {"L", 50}, {"XC", 90},
 	{"C", 100}, {"CC", 200}, {"CCC", 300}, {"CD", 400},
@@ -17,12 +17,19 @@ static const char roman_char[] = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 
 #define MAX_NUMBER_ROMAN_CHARACTERS 7
 #define MAX_STRING_LENGTH 256
+#define MAX_ARRAY_ELEMENT 50
 #define TRUE 1
 #define FALSE 0
+
+int string_A[MAX_ARRAY_ELEMENT];
+int string_B[MAX_ARRAY_ELEMENT];
+int string_C[MAX_ARRAY_ELEMENT];
 
 char *getstring(char *);
 int all_roman_numeral_character(char *);
 char *is_substring_in_roman_numeral(char *, char *);
 int roman_numeral_character_frequency(char *, char);
+int roman_numeral_token_indexer(char *, int *);
+int roman_numeral_parser(char *, int *, int);
 
 #endif /* ROMAN_NURERAL_H */

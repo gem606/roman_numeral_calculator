@@ -83,3 +83,77 @@ int roman_numeral_character_frequency(char *strptr, char tchar)
 
 	return nchar;
 }
+
+int roman_numeral_token_indexer(char *pstr, int *rlen)
+{
+	char *sparse;
+	int len, i, ntoken;
+
+	
+	/* Get string length */
+	if ((len = strlen(pstr)) > 3) {
+		*rlen = len;
+		printf("Roman Numeral token does not exist.\nToken sought = %s\n", pstr);
+		return -1;
+	}
+
+	/* Determine Number of Roman Numeral Tokens */
+	ntoken = sizeof(roman_numeral_token) / sizeof(*roman_numeral_token);
+
+	sparse = (char *)calloc(3 + 1, sizeof(char));
+	while (len > 0) {
+		strncpy(sparse, pstr, len);
+
+		/* Search for this token */
+		for (i = 0; i < ntoken; i++) {
+			if (strcmp(sparse,
+			     ((&(roman_numeral_token[i]))->roman_char_string)) == 0) {
+				*rlen = len;		
+				free(sparse);
+				return i;	/* Index into roman numeral table */
+			}
+		}
+		len--;
+	}	
+	free(sparse);
+
+	/* Token not found */
+	printf("Roman Numeral token not found.\nToken sought = %s\n", pstr);
+	return -1;	/* shouldn't happen */
+}
+
+int roman_numeral_parser(char *pstr, int *parsed_str, int mlength)
+{
+	char *sparse;
+	int len, indx, res = 0, slide;
+	int ntoken, *ptoken, tindex = 0;
+	bool token;
+
+	/* Get string length */
+	len = strlen(pstr);
+	ptoken = parsed_str;
+
+	while (len != 0) {
+		if (len >= slide)
+			slide = 3;	/* String of 3 */
+		else
+			slide = len;	/* String < 3 */
+
+		/* Search for this token */
+		strncpy(sparse, pstr, slide);
+		indx = roman_numeral_token_indexer(sparse, &res);
+		if (indx >= 0) {
+			/* Set token index */
+			*parsed_str = indx;
+			parsed_str += 1;
+
+			/* Update sting pointer */
+			pstr += res;
+			len -= res;
+			continue;
+		}
+		/* String parsing failure */
+		return -1;
+	}
+	return 0;
+}

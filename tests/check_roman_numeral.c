@@ -6,7 +6,7 @@
 static char *teststring[] = {
 	"IVXLCDM", "ivxlcdm", "abcdefghi", "MCMLXVII", "MCMXLIIII", "MCMXLIII",
 	"CLXXXXIX", "CDXXXIX", "MCCCCMLVII", "MCCCLVIII", "MCMVVIII",
-	"MCMLVII", "LLLVD", "MCMLXIII", "MCDDDDD", "MCDLVIII"
+	"MCMLVII", "LLLVD", "MCMLXIII", "MCDDDDD", "MCDLVIII", "IVX", "III"
 };
 
 START_TEST(check_null_ptr)
@@ -92,7 +92,15 @@ START_TEST(check_D_character_frequency)
 	ck_assert_int_le(ncount, 1);
 }
 END_TEST
-		
+
+START_TEST(check_roman_token_indexer)
+{
+	int tindex, len, sindex = 2;
+
+	tindex = roman_numeral_token_indexer(*(&teststring[17]), &len);
+	ck_assert_int_eq(tindex, sindex);
+}
+END_TEST		
 		
 Suite *roman_numeral_suite(void)
 {
@@ -113,6 +121,7 @@ Suite *roman_numeral_suite(void)
 	tcase_add_test(tc_core, check_V_character_frequency);
 	tcase_add_test(tc_core, check_L_character_frequency);
 	tcase_add_test(tc_core, check_D_character_frequency);
+	tcase_add_test(tc_core, check_roman_token_indexer);
 	suite_add_tcase(s, tc_core);
 
 	return s;
