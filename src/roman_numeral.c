@@ -113,6 +113,7 @@ int roman_numeral_token_indexer(char *pstr, int *rlen)
 				return i;	/* Index into roman numeral table */
 			}
 		}
+		memset(sparse, 0, len);
 		len--;
 	}	
 	free(sparse);
@@ -122,17 +123,17 @@ int roman_numeral_token_indexer(char *pstr, int *rlen)
 	return -1;	/* shouldn't happen */
 }
 
-int roman_numeral_parser(char *pstr, int *parsed_str, int mlength)
+int roman_numeral_parser(char *pstr, int *parsed_str, int parsed_length)
 {
 	char *sparse;
-	int len, indx, res = 0, slide;
-	int ntoken, *ptoken, tindex = 0;
-	bool token;
+	int len, indx, res = 0, slide = 3;
+	int ntoken = 0;
 
 	/* Get string length */
 	len = strlen(pstr);
-	ptoken = parsed_str;
 
+	/* Search string for its tokens */
+	sparse = (char *)calloc(slide + 1, sizeof(char));
 	while (len != 0) {
 		if (len >= slide)
 			slide = 3;	/* String of 3 */
@@ -143,17 +144,30 @@ int roman_numeral_parser(char *pstr, int *parsed_str, int mlength)
 		strncpy(sparse, pstr, slide);
 		indx = roman_numeral_token_indexer(sparse, &res);
 		if (indx >= 0) {
-			/* Set token index */
+
+			if (ntoken > parsed_length) {
+				printf("roman_numeral_parser: Failed - Array - too small\n");
+				goto failure;				
+			}
+
+			/* Save token index */
 			*parsed_str = indx;
 			parsed_str += 1;
+			ntoken++;
 
 			/* Update sting pointer */
 			pstr += res;
 			len -= res;
 			continue;
+		} else {
+			printf("roman_numeral_parser: Token not found\n");
+			goto failure;
 		}
-		/* String parsing failure */
-		return -1;
 	}
-	return 0;
+	free(sparse);
+	return ntoken;
+
+failure:
+	free(sparse);
+	return -1;
 }

@@ -6,8 +6,11 @@
 static char *teststring[] = {
 	"IVXLCDM", "ivxlcdm", "abcdefghi", "MCMLXVII", "MCMXLIIII", "MCMXLIII",
 	"CLXXXXIX", "CDXXXIX", "MCCCCMLVII", "MCCCLVIII", "MCMVVIII",
-	"MCMLVII", "LLLVD", "MCMLXIII", "MCDDDDD", "MCDLVIII", "IVX", "III"
+	"MCMLVII", "LLLVD", "MCMLXIII", "MCDDDDD", "MCDLVIII", "IVX", "III",
+	"MMCDLXXXVIII"
 };
+
+static int testparsed[] = {18, 18, 15, 10, 8, 4, 2};
 
 START_TEST(check_null_ptr)
 {
@@ -100,6 +103,18 @@ START_TEST(check_roman_token_indexer)
 	tindex = roman_numeral_token_indexer(*(&teststring[17]), &len);
 	ck_assert_int_eq(tindex, sindex);
 }
+END_TEST
+
+START_TEST(check_roman_numeral_token_extractor)
+{
+	int *parser_str, slen, indx;
+
+	slen = strlen(*(&teststring[18]));
+	parser_str = calloc((slen + 1), sizeof(int));
+	indx = roman_numeral_parser((*(&teststring[18])), parser_str, slen);
+	ck_assert_int_ne(-1, indx);
+	free(parser_str);
+}
 END_TEST		
 		
 Suite *roman_numeral_suite(void)
@@ -122,6 +137,7 @@ Suite *roman_numeral_suite(void)
 	tcase_add_test(tc_core, check_L_character_frequency);
 	tcase_add_test(tc_core, check_D_character_frequency);
 	tcase_add_test(tc_core, check_roman_token_indexer);
+	tcase_add_test(tc_core, check_roman_numeral_token_extractor);
 	suite_add_tcase(s, tc_core);
 
 	return s;
