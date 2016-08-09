@@ -143,6 +143,19 @@ START_TEST(check_roman_numeral_value_to_string_conversion)
 	ck_assert_str_eq(rtstring, teststring[18]);
 }
 END_TEST
+
+START_TEST(check_numerical_adder)
+{
+	int testvalue_1 = 2488, testvalue_2 = 7986;
+	long int results, testresult;
+
+	testresult = testvalue_1 + testvalue_2;
+
+	results = numerical_adder(testvalue_1, testvalue_2);
+	ck_assert_int_eq(testresult, results);
+}
+END_TEST
+
 			
 Suite *roman_numeral_suite(void)
 {
@@ -167,6 +180,7 @@ Suite *roman_numeral_suite(void)
 	tcase_add_test(tc_core, check_roman_numeral_token_extractor);
 	tcase_add_test(tc_core, check_roman_numeral_string_value);
 	tcase_add_test(tc_core, check_roman_numeral_value_to_string_conversion);
+	tcase_add_test(tc_core, check_numerical_adder);
 	suite_add_tcase(s, tc_core);
 
 	return s;

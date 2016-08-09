@@ -239,3 +239,11 @@ int roman_numeral_value_to_string_conversion(char *results, int value, int nelem
 	}		
 	return 0;
 }
+
+long int numerical_adder(int value_1, int value_2)
+{
+	long int adder = 0;
+
+	adder = value_1 + value_2;
+	return adder;
+}

@@ -29,5 +29,6 @@ int roman_numeral_token_indexer(char *, int *);
 int roman_numeral_parser(char *, int *, int);
 int compute_value_roman_numeral_string(int *, int);
 int roman_numeral_value_to_string_conversion(char *, int , int);
+long int numerical_adder(int , int );
 
 #endif /* ROMAN_NURERAL_H */
