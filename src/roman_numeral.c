@@ -247,3 +247,14 @@ long int numerical_adder(int value_1, int value_2)
 	adder = value_1 + value_2;
 	return adder;
 }
+
+long int numerical_subtractor(int value_1, int value_2)
+{
+	long int subtractor = -1;
+
+	if (value_1 < value_2)
+		return subtractor;
+
+	subtractor = value_1 - value_2;
+	return subtractor;
+}
