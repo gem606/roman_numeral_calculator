@@ -198,8 +198,6 @@ int compute_value_roman_numeral_string(int *parsed, int nelem)
 	int sum = 0, i, j, ntoken;
 
 	assert(parsed != NULL);
-	
-	printf("Number of elements in this string = %d\n", nelem);
 
 	/* Determine Number of Roman Numeral Tokens */
 	ntoken = sizeof(roman_numeral_token) / sizeof(*roman_numeral_token);
@@ -210,4 +208,34 @@ int compute_value_roman_numeral_string(int *parsed, int nelem)
 		parsed += 1;
 	}
 	return sum;
+}
+
+int roman_numeral_value_to_string_conversion(char *results, int value, int nelem)
+{
+	int i, j, ntoken, nl = 0, nloop;
+
+	assert(results != NULL);
+
+	/* Determine Number of Roman Numeral Tokens */
+	ntoken = sizeof(roman_numeral_token) / sizeof(*roman_numeral_token);
+
+	/* Build roman numeral string */
+	if (value <= 0) {
+		printf("roman_numeral_value_to_string_conversion: Improper value\n");
+		return -1;
+	}
+
+	for (i = ntoken - 1; i >= 0; i--) {
+		if (!value)
+			return 0;
+
+		nloop = value / (&roman_numeral_token[i])->roman_char_stringvalue;
+		while (nloop && (nl <= nelem)) {
+			strcat(results, (&roman_numeral_token[i])->roman_char_string);
+			value -= (&roman_numeral_token[i])->roman_char_stringvalue;
+			nloop -= 1;
+			nl += strlen(results);
+		}
+	}		
+	return 0;
 }

@@ -129,8 +129,21 @@ START_TEST(check_roman_numeral_string_value)
 	string_value = compute_value_roman_numeral_string(parsed_string, nelement);
 	ck_assert_int_eq(string_value, test_value);
 }
-END_TEST		
-		
+END_TEST
+
+START_TEST(check_roman_numeral_value_to_string_conversion)
+{
+	int testvalue = 2488;
+	char *rtstring;
+
+	rtstring = (char *)calloc(MAX_STRING_LENGTH + 1, sizeof(char));
+	ck_assert_ptr_ne(rtstring, NULL);
+
+	roman_numeral_value_to_string_conversion(rtstring, testvalue, MAX_STRING_LENGTH);
+	ck_assert_str_eq(rtstring, teststring[18]);
+}
+END_TEST
+			
 Suite *roman_numeral_suite(void)
 {
 	Suite *s;
@@ -153,6 +166,7 @@ Suite *roman_numeral_suite(void)
 	tcase_add_test(tc_core, check_roman_token_indexer);
 	tcase_add_test(tc_core, check_roman_numeral_token_extractor);
 	tcase_add_test(tc_core, check_roman_numeral_string_value);
+	tcase_add_test(tc_core, check_roman_numeral_value_to_string_conversion);
 	suite_add_tcase(s, tc_core);
 
 	return s;

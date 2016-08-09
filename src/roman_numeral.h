@@ -21,10 +21,6 @@ static const char roman_char[] = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 #define TRUE 1
 #define FALSE 0
 
-int string_A[MAX_ARRAY_ELEMENT];
-int string_B[MAX_ARRAY_ELEMENT];
-int string_C[MAX_ARRAY_ELEMENT];
-
 char *getstring(char *);
 int all_roman_numeral_character(char *);
 char *is_substring_in_roman_numeral(char *, char *);
@@ -32,5 +28,6 @@ int roman_numeral_character_frequency(char *, char);
 int roman_numeral_token_indexer(char *, int *);
 int roman_numeral_parser(char *, int *, int);
 int compute_value_roman_numeral_string(int *, int);
+int roman_numeral_value_to_string_conversion(char *, int , int);
 
 #endif /* ROMAN_NURERAL_H */
