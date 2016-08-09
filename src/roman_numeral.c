@@ -3,6 +3,8 @@
 #include <string.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <errno.h>
+#include <assert.h>
 
 char *getstring(char *ptr_roman_numeral)
 {
@@ -23,7 +25,8 @@ char *getstring(char *ptr_roman_numeral)
 	 *	 fgets(ptr_roman_numeral, MAX_STRING_LENGTH, stdin);
          *	 return ptr_roman_numeral;
 	 *	 ...
-	 */	
+	 */
+
 	return ptr_roman_numeral;
 }
 
@@ -32,6 +35,7 @@ int all_roman_numeral_character(char *ptr)
 	int slen, i, j;
 	bool roman;
 
+	assert(ptr != NULL);
 	if ((slen = strlen(ptr)) == 0)
 		return 0;
 	
@@ -57,6 +61,9 @@ char *is_substring_in_roman_numeral(char *ptr, char *tstr)
 {
 	char *str;
 
+	assert(ptr != NULL);
+	assert(tstr != NULL);
+
 	/* Search for this string in the roman numeral */
 	str = strstr(ptr, tstr);
 
@@ -67,6 +74,8 @@ int roman_numeral_character_frequency(char *strptr, char tchar)
 {
 	int slen, nchar = 0, i;
 	char *ptr;
+
+	assert(strptr != NULL);
 
 	/* Get string length */
 	if ((slen = strlen(strptr)) == 0)
@@ -89,6 +98,8 @@ int roman_numeral_token_indexer(char *pstr, int *rlen)
 	char *sparse;
 	int len, i, ntoken;
 
+	assert(pstr != NULL);
+	assert(rlen != NULL);
 	
 	/* Get string length */
 	if ((len = strlen(pstr)) > 3) {
@@ -100,7 +111,10 @@ int roman_numeral_token_indexer(char *pstr, int *rlen)
 	/* Determine Number of Roman Numeral Tokens */
 	ntoken = sizeof(roman_numeral_token) / sizeof(*roman_numeral_token);
 
-	sparse = (char *)calloc(3 + 1, sizeof(char));
+	if ((sparse = (char *)calloc(3 + 1, sizeof(char))) == NULL) {
+		printf("roman_numeral_token_indexer: No Memory\n");
+		return -ENOMEM;
+	}
 	while (len > 0) {
 		strncpy(sparse, pstr, len);
 
@@ -129,11 +143,18 @@ int roman_numeral_parser(char *pstr, int *parsed_str, int parsed_length)
 	int len, indx, res = 0, slide = 3;
 	int ntoken = 0;
 
+	assert(pstr != NULL);
+	assert(parsed_str != NULL);
+
 	/* Get string length */
 	len = strlen(pstr);
 
 	/* Search string for its tokens */
-	sparse = (char *)calloc(slide + 1, sizeof(char));
+	if ((sparse = (char *)calloc(slide + 1, sizeof(char))) == NULL) {
+		printf("roman_numeral_parser: Error No Memory\n");
+		return -ENOMEM;
+	}
+
 	while (len != 0) {
 		if (len >= slide)
 			slide = 3;	/* String of 3 */
@@ -170,4 +191,23 @@ int roman_numeral_parser(char *pstr, int *parsed_str, int parsed_length)
 failure:
 	free(sparse);
 	return -1;
+}
+
+int compute_value_roman_numeral_string(int *parsed, int nelem)
+{
+	int sum = 0, i, j, ntoken;
+
+	assert(parsed != NULL);
+	
+	printf("Number of elements in this string = %d\n", nelem);
+
+	/* Determine Number of Roman Numeral Tokens */
+	ntoken = sizeof(roman_numeral_token) / sizeof(*roman_numeral_token);
+
+	/* Compute the value of this string */
+	for (i = 0; i < nelem; i++) {
+		sum += (&roman_numeral_token[*parsed])->roman_char_stringvalue;
+		parsed += 1;
+	}
+	return sum;
 }

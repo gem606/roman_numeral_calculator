@@ -111,9 +111,23 @@ START_TEST(check_roman_numeral_token_extractor)
 
 	slen = strlen(*(&teststring[18]));
 	parser_str = calloc((slen + 1), sizeof(int));
+	ck_assert_ptr_ne(parser_str, NULL);
 	indx = roman_numeral_parser((*(&teststring[18])), parser_str, slen);
 	ck_assert_int_ne(-1, indx);
 	free(parser_str);
+}
+END_TEST
+
+START_TEST(check_roman_numeral_string_value)
+{
+	int string_value, test_value, *parsed_string, nelement;
+
+	parsed_string = &testparsed[0];
+	test_value = 2488;
+	nelement = sizeof(testparsed) / sizeof(int);
+
+	string_value = compute_value_roman_numeral_string(parsed_string, nelement);
+	ck_assert_int_eq(string_value, test_value);
 }
 END_TEST		
 		
@@ -138,6 +152,7 @@ Suite *roman_numeral_suite(void)
 	tcase_add_test(tc_core, check_D_character_frequency);
 	tcase_add_test(tc_core, check_roman_token_indexer);
 	tcase_add_test(tc_core, check_roman_numeral_token_extractor);
+	tcase_add_test(tc_core, check_roman_numeral_string_value);
 	suite_add_tcase(s, tc_core);
 
 	return s;

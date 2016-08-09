@@ -31,5 +31,6 @@ char *is_substring_in_roman_numeral(char *, char *);
 int roman_numeral_character_frequency(char *, char);
 int roman_numeral_token_indexer(char *, int *);
 int roman_numeral_parser(char *, int *, int);
+int compute_value_roman_numeral_string(int *, int);
 
 #endif /* ROMAN_NURERAL_H */
