@@ -12,24 +12,6 @@ static char *teststring[] = {
 
 static int testparsed[] = {18, 18, 15, 10, 8, 4, 2};
 
-START_TEST(check_null_ptr)
-{
-	char *ptr, *ptrtest = NULL;
-
-	ptr = getstring(ptrtest);
-	ck_assert_ptr_eq(ptr, ptrtest);
-}
-END_TEST
-
-START_TEST(check_nonnull_ptr)
-{
-	char *ptr;
-
-	ptr = getstring(*(&teststring[0]));
-	ck_assert_ptr_ne(ptr, &teststring[0]);
-}
-END_TEST
-
 START_TEST(check_roman_numeral_character)
 {
 	int strlength, len = 0;
@@ -174,8 +156,6 @@ Suite *roman_numeral_suite(void)
 	/* Core test case */
 	tc_core = tcase_create("Core");
 
-	tcase_add_test(tc_core, check_null_ptr);
-	tcase_add_test(tc_core, check_nonnull_ptr);
 	tcase_add_test(tc_core, check_roman_numeral_character);
 	tcase_add_test(tc_core, check_I_substring_in_roman_numeral);
 	tcase_add_test(tc_core, check_X_substring_in_roman_numeral);

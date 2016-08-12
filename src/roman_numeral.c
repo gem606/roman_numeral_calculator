@@ -6,28 +6,71 @@
 #include <errno.h>
 #include <assert.h>
 
+int roman_numeral_calculator_interface()
+{
+	int sel, c;
+
+	/* Display User Opening Screen */
+	printf("    Welcome - Roman Numeral Calculator\n\n");
+	printf("1 - Enter a Roman Numeral String\n");
+	printf("2 - Add Roman Numeral Strings\n");
+	printf("3 - Subtract Roman Numeral Strings\n");
+	printf("4 - Display Roman Numeral Registers\n");
+	printf("5 - Exit\n\n");
+	printf("Operation = ");
+
+	/* Get user's selection */
+    	while ((c = getchar()) != '\n')
+		sel = c - '0';
+
+    	return sel;
+}
+
 char *getstring(char *ptr_roman_numeral)
 {
-	/* Get Input character string
-	 * 
-	 * The intent of getstring() is to retrieve user information
-	 * - i.e., roman numeral strings. It is not clear how one might
-	 * effectively incorporate user interactions into the testing
-	 * model.
-	 *
-	 * I've chosen to incorporate data strings into my test suite for
-	 * this function rather than have the tests timeout.
-	 *
-	 * The following code segment might appear in this function:
-	 *	
-	 *	 printf("/nPlease Enter a Roman Number string - ");
-	 *
-	 *	 fgets(ptr_roman_numeral, MAX_STRING_LENGTH, stdin);
-         *	 return ptr_roman_numeral;
-	 *	 ...
-	 */
+	char *rns;
+	int rnl;
+
+	assert(ptr_roman_numeral != NULL);
+
+	/* Allocate Memory */
+	rns = (char *)calloc(MAX_STRING_LENGTH + 1, sizeof(char));
+	assert(rns != NULL);
+
+	/* Get Input character string */
+	printf("Roman Number string = ");
+	fgets(rns, MAX_STRING_LENGTH, stdin);
+	rnl = strlen(rns) - 1;	/* Remove New line Character */
+
+	strncpy(ptr_roman_numeral, rns, rnl);
+	free(rns);
 
 	return ptr_roman_numeral;
+}
+
+int valid_roman_numeral_string(char *rnstring)
+{
+	int i, len;
+
+	/* Check string - Invalid roman numeral characters */
+	if (all_roman_numeral_character(rnstring) <= 0)
+		return -EINVAL;
+
+	/* Check string - Invalid substring */
+	len = sizeof(invalid_roman_pattern) / sizeof(*invalid_roman_pattern);
+	for (i = 0; i < len; i++)
+		if (is_substring_in_roman_numeral(rnstring,
+			invalid_roman_pattern[i]) != NULL)
+			return -EINVAL;
+
+	/* Check string - Invalid character frequency */
+	len = sizeof(single_roman_char) / sizeof(char);
+	for (i = 0; i < len; i++)
+		if (roman_numeral_character_frequency(rnstring, 
+			single_roman_char[i]) > 1)
+			return -EINVAL;
+
+	return SUCCESS;
 }
 
 int all_roman_numeral_character(char *ptr)
@@ -155,7 +198,7 @@ int roman_numeral_parser(char *pstr, int *parsed_str, int parsed_length)
 		return -ENOMEM;
 	}
 
-	while (len != 0) {
+	while (len > 0) {
 		if (len >= slide)
 			slide = 3;	/* String of 3 */
 		else
@@ -164,6 +207,7 @@ int roman_numeral_parser(char *pstr, int *parsed_str, int parsed_length)
 		/* Search for this token */
 		strncpy(sparse, pstr, slide);
 		indx = roman_numeral_token_indexer(sparse, &res);
+
 		if (indx >= 0) {
 
 			if (ntoken > parsed_length) {
