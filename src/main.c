@@ -10,6 +10,7 @@
 int main(void)
 {
 	struct calculator_register *pregister, *pptr, *dptr;
+	long int accumul = 0;
 	int nreg = 0, request, strl, *reg, token, i;
 	char *rn_string, *sdisplay;
 
@@ -66,6 +67,38 @@ int main(void)
 
 			break;
 		case 2:
+			/* Add Roman Numeral String */
+			dptr = pregister;
+
+			/* Accumulate Roman Numeral Value */
+			if (!nreg && !accumul) {
+				printf("Accumulator = *****\n");
+				continue;
+			}
+
+			/* Add last register value to accumulator */
+			if (nreg) {
+				dptr += (nreg - 1);
+				numerical_adder(&accumul, dptr->register_value);
+
+				dptr->register_value = 0;
+
+				/* Display the Roman Numeral Register Value */
+				sdisplay = (char *)calloc(MAX_STRING_LENGTH + 1, sizeof(char));
+				assert(sdisplay != NULL);
+
+				roman_numeral_value_to_string_conversion(sdisplay, accumul,
+					MAX_STRING_LENGTH);
+
+				if (strlen(sdisplay) > 0)
+					printf("Accumulator = %s\n", sdisplay);
+
+				/* Adjust register tracker and pointer */
+				nreg--;
+				pptr -= 1;
+				free(sdisplay);
+			}
+
 			break;
 		case 3:
 			break;
@@ -77,8 +110,8 @@ int main(void)
 			dptr = pregister;
 
 			for ( i = 0; i < nreg; i++) {
-				roman_numeral_value_to_string_conversion(sdisplay, dptr->register_value,
-					MAX_STRING_LENGTH);
+				roman_numeral_value_to_string_conversion(sdisplay,
+					(long int)dptr->register_value, MAX_STRING_LENGTH);
 
 				if (strlen(sdisplay) > 0)
 					printf("Register[%d] = %s\n", i, sdisplay);
@@ -88,6 +121,30 @@ int main(void)
 			free(sdisplay);				
 			break;
 		case 5:
+			/* Display Accumulator Value */
+			if (!accumul) {
+				printf("Accumulator = *****\n");
+				continue;
+			}
+
+			/* Display the Roman Numeral Register Value */
+			sdisplay = (char *)calloc(MAX_STRING_LENGTH + 1, sizeof(char));
+			assert(sdisplay != NULL);
+
+			roman_numeral_value_to_string_conversion(sdisplay, accumul,
+					MAX_STRING_LENGTH);
+
+			if (strlen(sdisplay) > 0)
+				printf("Accumulator = %s\n", sdisplay);
+
+			free(sdisplay);
+			break;
+		case 6:
+			/* Clear Accumulator */
+			accumul = 0;
+			break;
+		case 7:
+			/* Exit Roman Numeral Calculator */
 			goto out;
 		default:
 			printf("\nUnsupported Operational Request\n\n");

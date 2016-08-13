@@ -17,7 +17,9 @@ int roman_numeral_calculator_interface()
 	printf("2 - Add Roman Numeral Strings\n");
 	printf("3 - Subtract Roman Numeral Strings\n");
 	printf("4 - Display Roman Numeral Registers\n");
-	printf("5 - Exit\n\n");
+	printf("5 - Display Accumulator\n");
+	printf("6 - Clear Accumulator\n");
+	printf("7 - Exit\n\n");
 	printf("Operation = ");
 
 	/* Get user's selection */
@@ -258,7 +260,7 @@ int compute_value_roman_numeral_string(int *parsed, int nelem)
 	return sum;
 }
 
-int roman_numeral_value_to_string_conversion(char *results, int value, int nelem)
+int roman_numeral_value_to_string_conversion(char *results, long int value, int nelem)
 {
 	int i, j, ntoken, nl = 0, nloop;
 
@@ -290,21 +292,14 @@ int roman_numeral_value_to_string_conversion(char *results, int value, int nelem
 	return 0;
 }
 
-long int numerical_adder(int value_1, int value_2)
+void numerical_adder(long int *value_1, int value_2)
 {
-	long int adder = 0;
-
-	adder = value_1 + value_2;
-	return adder;
+	assert(value_1 != NULL);
+	*value_1 = *value_1 + value_2;
 }
 
-long int numerical_subtractor(int value_1, int value_2)
+void numerical_subtractor(long int *value_1, int value_2)
 {
-	long int subtractor = -1;
-
-	if (value_1 < value_2)
-		return subtractor;
-
-	subtractor = value_1 - value_2;
-	return subtractor;
+	assert(value_1 != NULL);
+	*value_1 = *value_1 - value_2;
 }

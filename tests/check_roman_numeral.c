@@ -121,7 +121,7 @@ START_TEST(check_roman_numeral_value_to_string_conversion)
 	rtstring = (char *)calloc(MAX_STRING_LENGTH + 1, sizeof(char));
 	ck_assert_ptr_ne(rtstring, NULL);
 
-	roman_numeral_value_to_string_conversion(rtstring, testvalue, MAX_STRING_LENGTH);
+	roman_numeral_value_to_string_conversion(rtstring, (long int)testvalue, MAX_STRING_LENGTH);
 	ck_assert_str_eq(rtstring, teststring[18]);
 }
 END_TEST
@@ -129,20 +129,20 @@ END_TEST
 START_TEST(check_numerical_adder)
 {
 	int testvalue_1 = 2488, testvalue_2 = 7986;
-	long int results;
+	long int results = 0;
 
-	results = numerical_adder(testvalue_1, testvalue_2);
-	ck_assert_int_gt(results, 0);
+	numerical_adder(&results, testvalue_2);
+	ck_assert_int_eq(results, testvalue_2);
 }
 END_TEST
 
 START_TEST(check_numerical_subtractor)
 {
-	int testvalue_2 = 2488, testvalue_1 = 7986;
-	long int results;
+	int testvalue_2 = 2488, testvalue_1 = 5498;
+	long int results = 7986;
 
-	results = numerical_subtractor(testvalue_1, testvalue_2);
-	ck_assert_int_gt(results, 0);
+	numerical_subtractor(&results, testvalue_2);
+	ck_assert_int_eq(results, testvalue_1);
 }
 END_TEST
 			
