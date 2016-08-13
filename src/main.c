@@ -10,7 +10,7 @@
 int main(void)
 {
 	struct calculator_register *pregister, *pptr, *dptr;
-	long int accumul = 0;
+	long int accumul = 0, saved_accumul;
 	int nreg = 0, request, strl, *reg, token, i;
 	char *rn_string, *sdisplay;
 
@@ -98,9 +98,48 @@ int main(void)
 				pptr -= 1;
 				free(sdisplay);
 			}
-
 			break;
 		case 3:
+			/* Subtracting Roman Numeral String */
+			dptr = pregister;
+
+			/* Accumulate Roman Numeral Value */
+			if (!nreg && !accumul) {
+				printf("Accumulator = *****\n");
+				continue;
+			}
+
+			dptr += (nreg - 1);
+			if (nreg == 1 && !accumul)
+				numerical_adder(&accumul, dptr->register_value);
+			else {
+				/* Subtract last register value from accumulator */
+				saved_accumul = accumul;
+
+				numerical_subtractor(&accumul, dptr->register_value);
+
+				if (accumul <= 0) {
+					accumul = saved_accumul;
+					printf("Accumulator = *****\n");
+					continue;
+				}
+			}
+			dptr->register_value = 0;
+
+			/* Display the Roman Numeral Register Value */
+			sdisplay = (char *)calloc(MAX_STRING_LENGTH + 1, sizeof(char));
+			assert(sdisplay != NULL);
+
+			roman_numeral_value_to_string_conversion(sdisplay, accumul,
+				MAX_STRING_LENGTH);
+
+			if (strlen(sdisplay) > 0)
+				printf("Accumulator = %s\n", sdisplay);
+
+			/* Adjust register tracker and pointer */
+			nreg--;
+			pptr -= 1;
+			free(sdisplay);
 			break;
 		case 4:
 			/* Display the Roman Numeral Register Value */
