@@ -11,6 +11,7 @@ int roman_numeral_calculator_interface()
 	int sel, c;
 
 	/* Display User Opening Screen */
+	printf("\n");
 	printf("    Welcome - Roman Numeral Calculator\n\n");
 	printf("1 - Enter a Roman Numeral String\n");
 	printf("2 - Add Roman Numeral Strings\n");
@@ -28,7 +29,7 @@ int roman_numeral_calculator_interface()
 
 char *getstring(char *ptr_roman_numeral)
 {
-	char *rns;
+	char *rns, nl[] = "\n";
 	int rnl;
 
 	assert(ptr_roman_numeral != NULL);
@@ -38,9 +39,9 @@ char *getstring(char *ptr_roman_numeral)
 	assert(rns != NULL);
 
 	/* Get Input character string */
-	printf("Roman Number string = ");
+	printf("\nRoman Number string = ");
 	fgets(rns, MAX_STRING_LENGTH, stdin);
-	rnl = strlen(rns) - 1;	/* Remove New line Character */
+	rnl = strcspn(rns, nl);		/* Remove New line Character */
 
 	strncpy(ptr_roman_numeral, rns, rnl);
 	free(rns);
@@ -170,7 +171,7 @@ int roman_numeral_token_indexer(char *pstr, int *rlen)
 				return i;	/* Index into roman numeral table */
 			}
 		}
-		memset(sparse, 0, len);
+		memset(sparse, '\0', 4);
 		len--;
 	}	
 	free(sparse);
@@ -182,8 +183,8 @@ int roman_numeral_token_indexer(char *pstr, int *rlen)
 
 int roman_numeral_parser(char *pstr, int *parsed_str, int parsed_length)
 {
-	char *sparse;
-	int len, indx, res = 0, slide = 3;
+	char *sparse, *sp;
+	int len, ltr = 0, slen, indx, res = 0, slide = 3;
 	int ntoken = 0;
 
 	assert(pstr != NULL);
@@ -198,13 +199,14 @@ int roman_numeral_parser(char *pstr, int *parsed_str, int parsed_length)
 		return -ENOMEM;
 	}
 
-	while (len > 0) {
-		if (len >= slide)
+	while (*pstr != '\0') {
+		if (len >= 3)
 			slide = 3;	/* String of 3 */
 		else
 			slide = len;	/* String < 3 */
 
 		/* Search for this token */
+		memset(sparse, 0, 4);
 		strncpy(sparse, pstr, slide);
 		indx = roman_numeral_token_indexer(sparse, &res);
 
@@ -223,6 +225,8 @@ int roman_numeral_parser(char *pstr, int *parsed_str, int parsed_length)
 			/* Update sting pointer */
 			pstr += res;
 			len -= res;
+
+
 			continue;
 		} else {
 			printf("roman_numeral_parser: Token not found\n");
@@ -259,6 +263,7 @@ int roman_numeral_value_to_string_conversion(char *results, int value, int nelem
 	int i, j, ntoken, nl = 0, nloop;
 
 	assert(results != NULL);
+	memset(results, '\0', nelem);
 
 	/* Determine Number of Roman Numeral Tokens */
 	ntoken = sizeof(roman_numeral_token) / sizeof(*roman_numeral_token);
@@ -274,7 +279,8 @@ int roman_numeral_value_to_string_conversion(char *results, int value, int nelem
 			return 0;
 
 		nloop = value / (&roman_numeral_token[i])->roman_char_stringvalue;
-		while (nloop && (nl <= nelem)) {
+
+		while (nloop && (nl < nelem)) {
 			strcat(results, (&roman_numeral_token[i])->roman_char_string);
 			value -= (&roman_numeral_token[i])->roman_char_stringvalue;
 			nloop -= 1;

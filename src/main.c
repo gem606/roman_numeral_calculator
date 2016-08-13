@@ -9,9 +9,9 @@
 
 int main(void)
 {
-	struct calculator_register *pregister, *pptr;
-	int nreg = 0, request, strl, *reg, token;
-	char *rn_string;
+	struct calculator_register *pregister, *pptr, *dptr;
+	int nreg = 0, request, strl, *reg, token, i;
+	char *rn_string, *sdisplay;
 
 	/* Allocate storage */
 	rn_string = (char *)calloc(MAX_STRING_LENGTH + 1, sizeof(char));
@@ -20,6 +20,7 @@ int main(void)
 	pptr = (struct calculator_register *)calloc(MAX_NUMBER_REGISTERS,
 			sizeof(struct calculator_register));
 	assert(pptr != NULL);
+	pregister = pptr;
 
 	while (TRUE) {
 		/* Display User Interface */
@@ -33,7 +34,7 @@ int main(void)
 			}
 
 			/* Get Roman Numeral String */
-			memset(rn_string, 0, MAX_STRING_LENGTH);
+			memset(rn_string, '\0', MAX_STRING_LENGTH);
 			getstring(rn_string);
 
 			/* Validate String */
@@ -44,7 +45,7 @@ int main(void)
 
 			/* Parse Roman Numeral String */
 			strl = strlen(rn_string);
-			reg = (int *)calloc(strl, sizeof(int));
+			reg = (int *)calloc(strl + 1, sizeof(int));
 
 			assert(reg != NULL);
 
@@ -69,6 +70,22 @@ int main(void)
 		case 3:
 			break;
 		case 4:
+			/* Display the Roman Numeral Register Value */
+			sdisplay = (char *)calloc(MAX_STRING_LENGTH + 1, sizeof(char));
+			assert(sdisplay != NULL);
+
+			dptr = pregister;
+
+			for ( i = 0; i < nreg; i++) {
+				roman_numeral_value_to_string_conversion(sdisplay, dptr->register_value,
+					MAX_STRING_LENGTH);
+
+				if (strlen(sdisplay) > 0)
+					printf("Register[%d] = %s\n", i, sdisplay);
+
+				dptr += 1;
+			}
+			free(sdisplay);				
 			break;
 		case 5:
 			goto out;
@@ -78,8 +95,7 @@ int main(void)
 		}
 	}
 out:
-	pptr -= nreg;
-	free(pptr);
+	free(pregister);
 	free(rn_string);
 
 	return 0;
