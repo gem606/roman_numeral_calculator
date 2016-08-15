@@ -2,7 +2,6 @@
 *~
 *.log
 config*
-Makefil*
 *.m4
 .libs/
 *.la
