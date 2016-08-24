@@ -109,6 +109,21 @@ int main(void)
 				continue;
 			}
 
+			if (!nreg && accumul) {
+				/* Display the Roman Numeral Register Value */
+				sdisplay = (char *)calloc(MAX_STRING_LENGTH + 1, sizeof(char));
+				assert(sdisplay != NULL);
+
+				roman_numeral_value_to_string_conversion(sdisplay, accumul,
+					MAX_STRING_LENGTH);
+
+				if (strlen(sdisplay) > 0)
+					printf("Accumulator = %s\n", sdisplay);
+
+				free(sdisplay); 
+				continue;
+			}
+
 			dptr += (nreg - 1);
 			if (nreg == 1 && !accumul)
 				numerical_adder(&accumul, dptr->register_value);
