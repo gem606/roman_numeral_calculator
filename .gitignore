@@ -2,7 +2,6 @@
 *~
 *.log
 config.h
-*.m4
 .libs/
 *.la
 .deps/
